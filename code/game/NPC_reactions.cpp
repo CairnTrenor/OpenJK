@@ -1146,6 +1146,19 @@ void NPC_Use( gentity_t *self, gentity_t *other, gentity_t *activator )
 		{//I don't have an enemy and I'm not talking and I was used by the player
 			NPC_UseResponse( self, other, qfalse );
 		}
+
+		if(self->client->playerTeam == TEAM_NEUTRAL || self->client->playerTeam == TEAM_PLAYER)
+		{
+			self->client->leader = (self->client->leader == NULL) ? &g_entities[0] : NULL;
+			if(self->client->leader != NULL)
+			{
+				CG_Printf("NPC '%s' is following you.\n", self->NPC_type);
+			}
+			else
+			{
+				CG_Printf("NPC '%s' is staying put.", self->NPC_type);
+			}
+		}
 	}
 
 	RestoreNPCGlobals();

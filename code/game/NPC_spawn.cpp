@@ -497,7 +497,8 @@ void NPC_SetMiscDefaultData( gentity_t *ent )
 		else
 		{
 			ent->NPC->defaultBehavior = BS_FOLLOW_LEADER;
-			ent->client->leader = &g_entities[0];//player
+			//ent->client->leader = &g_entities[0];//player
+			ent->client->leader = NULL;
 		}
 		break;
 
@@ -1289,6 +1290,7 @@ void NPC_Begin (gentity_t *ent)
 	ent->client->ps.persistant[PERS_TEAM] = ent->client->playerTeam;
 
 	ent->e_UseFunc   = useF_NPC_Use;
+	ent->svFlags |= SVF_PLAYER_USABLE;
 	ent->e_ThinkFunc = thinkF_NPC_Think;
 	ent->nextthink = level.time + FRAMETIME + Q_irand(0, 100);
 
