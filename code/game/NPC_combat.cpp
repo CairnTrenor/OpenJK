@@ -1586,7 +1586,7 @@ gentity_t *NPC_PickEnemy( gentity_t *closestTo, int enemyTeam, qboolean checkVis
 	int			visChecks = (CHECK_360|CHECK_FOV|CHECK_VISRANGE);
 	int			minVis = VIS_FOV;
 
-	if ( enemyTeam == TEAM_NEUTRAL )
+	if ( enemyTeam == TEAM_NEUTRAL || NPCInfo->behaviorState == BS_FOLLOW_OVERRIDE )
 	{
 		return NULL;
 	}

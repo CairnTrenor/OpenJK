@@ -41,6 +41,7 @@ typedef enum //# bState_e
 	BS_INVESTIGATE,//# head towards temp goal and look for enemies and listen for sounds
 	BS_STAND_AND_SHOOT,
 	BS_HUNT_AND_KILL,
+	BS_FOLLOW_OVERRIDE,
 	NUM_BSTATES
 } bState_t;
 

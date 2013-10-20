@@ -1927,8 +1927,13 @@ void NPC_RunBehavior( int team, int bState )
 {
 	qboolean dontSetAim = qfalse;
 
+	if( bState == BS_FOLLOW_OVERRIDE )
+	{
+		NPC_BSFollowLeader();
+		return;
+	}
 	//
-	if ( bState == BS_CINEMATIC )
+	else if ( bState == BS_CINEMATIC )
 	{
 		NPC_BSCinematic();
 	}

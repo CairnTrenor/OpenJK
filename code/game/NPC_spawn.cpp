@@ -4362,6 +4362,29 @@ void Svcmd_NPC_f( void )
 	{
 		NPC_Kill_f();
 	}
+	else if ( Q_stricmp( cmd, "killt" ) == 0 )
+	{
+		gentity_t	*target = NULL;
+		gentity_t	*player = &g_entities[0];
+		trace_t		trace;
+		vec3_t		src, dest, vf;
+		
+		VectorCopy( player->client->renderInfo.eyePoint, src );
+		AngleVectors( player->client->ps.viewangles, vf, NULL, NULL );
+		VectorMA( src, 65536, vf, dest );
+
+		gi.trace( &trace, src, vec3_origin, vec3_origin, dest, player->s.number, MASK_OPAQUE|CONTENTS_SOLID|CONTENTS_TERRAIN|CONTENTS_BODY|CONTENTS_ITEM|CONTENTS_CORPSE , G2_NOCOLLIDE, 10);
+		
+		if ( trace.fraction != 1.0f && trace.entityNum < ENTITYNUM_WORLD )
+		{
+			target = &g_entities[trace.entityNum];
+			if(target && target->NPC != NULL)
+			{
+				target->health = 0;
+				GEntity_DieFunc(target, target, target, target->max_health, MOD_UNKNOWN);
+			}
+		}
+	}
 	else if ( Q_stricmp( cmd, "showbounds" ) == 0 )
 	{//Toggle on and off
 		showBBoxes = showBBoxes ? qfalse : qtrue;

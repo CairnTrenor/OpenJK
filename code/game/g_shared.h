@@ -522,8 +522,15 @@ typedef struct
 #define MAX_FAILED_NODES 8
 #define MAX_INHAND_WEAPONS	2
 
+typedef struct NPCBackupInfo_s{
+	bState_t	tempBehavior;
+	bState_t	behaviorState;
+	gentity_t*	enemy;
+	gentity_t*	leader;
+}NPCBackupInfo_t;
 
 typedef struct centity_s centity_t;
+
 // !!!!!!!!!!! LOADSAVE-affecting struct !!!!!!!!!!!!!
 struct gentity_s {
 	entityState_t	s;				// communicated by server to clients
@@ -774,6 +781,7 @@ Ghoul2 Insert End
 	//NPC/Player entity fields
 	//FIXME: Make these client only?
 	gNPC_t		*NPC;//Only allocated if the entity becomes an NPC
+	NPCBackupInfo_t NPC_backupinfo;
 
 	//Other NPC/Player-related entity fields
 	char		*ownername;//Used by squadpaths to locate owning NPC

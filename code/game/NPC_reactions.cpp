@@ -1147,17 +1147,32 @@ void NPC_Use( gentity_t *self, gentity_t *other, gentity_t *activator )
 			NPC_UseResponse( self, other, qfalse );
 		}
 
-		if(self->client->playerTeam == TEAM_NEUTRAL || self->client->playerTeam == TEAM_PLAYER)
+
+		if(self->NPC->behaviorState != BS_FOLLOW_OVERRIDE)
 		{
-			self->client->leader = (self->client->leader == NULL) ? &g_entities[0] : NULL;
-			if(self->client->leader != NULL)
-			{
-				CG_Printf("NPC '%s' is following you.\n", self->NPC_type);
-			}
-			else
-			{
-				CG_Printf("NPC '%s' is staying put.", self->NPC_type);
-			}
+			// Store the backup info we need.
+			self->NPC_backupinfo.behaviorState	= self->NPC->behaviorState;
+			self->NPC_backupinfo.tempBehavior	= self->NPC->tempBehavior;
+			self->NPC_backupinfo.enemy			= self->enemy;
+			self->NPC_backupinfo.leader			= self->client->leader;
+
+			// Set our override behavior.
+			self->NPC->tempBehavior		= BS_FOLLOW_OVERRIDE;
+			self->NPC->behaviorState	= BS_FOLLOW_OVERRIDE;
+			self->enemy					= NULL;
+			self->client->leader		= &g_entities[0];
+
+			CG_Printf("NPC '%s' is now forced to follow you.\n", self->NPC_type);
+		}
+		else
+		{
+			// Restore normal npc behavior
+			self->NPC->behaviorState	= self->NPC_backupinfo.behaviorState;
+			self->NPC->tempBehavior		= self->NPC_backupinfo.tempBehavior;
+			self->enemy					= self->NPC_backupinfo.enemy;
+			self->client->leader		= self->NPC_backupinfo.leader;
+
+			CG_Printf("NPC '%s' is going back to normal behavior.\n", self->NPC_type);
 		}
 	}
 
